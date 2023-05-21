@@ -2,6 +2,7 @@
 Project for sharing learning materials between students.
 
 ## To do
+- [ ] Database schema
 - [ ] Create rooms
   - [ ] Invite link
   - [ ] create sub folders
