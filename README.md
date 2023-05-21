@@ -9,6 +9,12 @@ Project for sharing learning materials between students.
 - [ ] Get all files inside the room
 - [ ] Multiple rooms 
 - [ ] Navigation
+
+## Authors
+[@Tatranka](https://github.com/Tatrank)
+the one who came up with the idea, founding dev
+[@Kupec_samo](https://github.com/osmak1234)
+founding dev
 ## Resources
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
