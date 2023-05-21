@@ -1,10 +1,17 @@
-import { Box, Container, Text, Stack } from "@chakra-ui/react";
+// components
+import { Box, Button, Container, Text, Stack, Menu, MenuItem, MenuList, MenuButton, Wrap } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
+// session
+import { signIn, signOut, useSession } from "next-auth/react";
+
+//types
 import { type NextPage } from "next";
 
 const Navbar: NextPage = () => {
+  const { data: session, status } = useSession();
   return (
     <>
       <Box
@@ -29,7 +36,7 @@ const Navbar: NextPage = () => {
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Link href='/' >
                 <Text fontSize='lg' fontWeight='bold' display='inline-flex' >
-                  Veřejná místnost
+                  Veřejná místnos
                 </Text>
               </Link>
             </motion.div>
@@ -41,15 +48,63 @@ const Navbar: NextPage = () => {
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Link href='/admin' >
+              <Link href='/create' >
                 <Text fontSize='lg' fontWeight='bold' display='inline-flex' >
                   Založit
                 </Text>
               </Link>
             </motion.div>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+              <Menu>
+                <MenuButton>
+                  <Stack
+                    spacing={5}
+                    direction={"row"}
+                    display={"flex"}
+                    w='full'
+                    alignItems='center'
+                    justifyContent='center'
+
+                  >
+                    <Image style={{ borderRadius: "25px" }} alt="profile picture" src={session ? session.user?.image : "https://uploadthing.com/f/93953fc5-8afe-48dd-9171-ec26a86539de_anonymus.png"} width={50} height={50} />
+                    <Text fontSize='lg' fontWeight='bold' display='inline-flex' >{session ? session.user?.name : "Anonymus"}
+                    </Text>
+                  </Stack>
+                </MenuButton>
+                <MenuList
+                  color={"brand.text"}
+                  bg={"brand.main"}
+                  _hover={{ bg: "brand.hover" }}
+                  _active={{ bg: "brand.pressed" }}
+
+                >
+                  <MenuItem
+                    color={"brand.text"}
+                    bg={"brand.main"}
+                    _hover={{ bg: "brand.hover" }}
+                    _active={{ bg: "brand.pressed" }}
+                    onClick={() => {
+                      session ? signOut().catch(console.log) : signIn("discord").catch(console.log);
+                    }}
+                  >{session ? "Sign Out" : "Sing In"}</MenuItem>
+                  <MenuItem
+                    color={"brand.text"}
+                    bg={"brand.main"}
+                    _hover={{ bg: "brand.hover" }}
+                    _active={{ bg: "brand.pressed" }}
+                  >Settings</MenuItem>
+                  <MenuItem
+                    color={"brand.text"}
+                    bg={"brand.main"}
+                    _hover={{ bg: "brand.hover" }}
+                    _active={{ bg: "brand.pressed" }}
+                  >My rooms</MenuItem>
+                </MenuList>
+              </Menu>
+            </motion.div>
           </Stack>
         </Container>
-      </Box>
+      </Box >
     </>
   );
 };

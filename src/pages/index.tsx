@@ -10,7 +10,8 @@ const Home: NextPage = () => {
   }
 
   return (
-    <>
+    <Box pt={70}>
+
       <Heading
         as={"h1"}
         size={"2xl"}
@@ -21,37 +22,16 @@ const Home: NextPage = () => {
         {session ? (
           <>
             <Text color={"brand.text"}>hi {session.user?.name}</Text>
-            <Button
-              color={"brand.text"}
-              bg={"brand.main"}
-              _hover={{ bg: "brand.hover" }}
-              _active={{ bg: "brand.pressed" }}
-              onClick={() => {
-                signOut().catch(console.log);
-              }}
-            >
-              Logout
-            </Button>
           </>
         ) : (
           <>
-            <Text>To view the room you have to sign in</Text>
-            <Button
-              color={"brand.text"}
-              bg={"brand.main"}
-              _hover={{ bg: "brand.hover" }}
-              _active={{ bg: "brand.pressed" }}
-              onClick={() => {
-                signIn("discord").catch(console.log);
-              }}
-            >
-              Login with Discord
-            </Button>
+            <Text color={"brand.text"}>You are not signed in, sign in with the avatar in the navbar</Text>
           </>
+        )
+        }
 
-        )}
       </Box>
-    </>
+    </Box>
   );
 };
 
