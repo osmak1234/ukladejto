@@ -10,8 +10,8 @@ export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
   imageUploader: f
     // Set permissions and file types for this FileRoute
-    .fileTypes(["image", "video"])
-    .maxSize("4MB")
+    .fileTypes(["blob", "image", "video", "audio"])
+    .maxSize("16MB")
     .middleware(async (req, res) => {
       // This code runs on your server before upload
       const user = await auth(req, res);
