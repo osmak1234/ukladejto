@@ -11,11 +11,18 @@ Project for sharing learning materials between students.
 - [ ] Multiple rooms 
 - [ ] Navigation
 
+<<<<<<< HEAD
 ## Authors
 [@Tatranka](https://github.com/Tatrank)
 the one who came up with the idea, founding dev
 [@Kupec_samo](https://github.com/osmak1234)
 founding dev
+=======
+## Ideas
+Generate flash cards from the learning materials.
+OpenAI summary feature. (Maybe would be paid, it's pricey)
+
+>>>>>>> e5a73a9 (small ui changes, README update)
 ## Resources
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
