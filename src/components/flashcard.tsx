@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { type NextPage } from "next";
 import { Heading, Text, Button, Box } from "@chakra-ui/react";
 
 const MotionBox = motion(Box);
@@ -16,7 +15,7 @@ const cardVariants = {
   },
 };
 
-const Flashcard: NextPage = () => {
+const Flashcard = ({ frontText, backText }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleCardClick = () => {
@@ -27,8 +26,8 @@ const Flashcard: NextPage = () => {
     <Box position="relative" onClick={handleCardClick} cursor="pointer">
       <MotionBox
         w="300px"
-        h="400px"
-        backgroundColor="teal.500"
+        h="300px"
+        bg="blue"
         borderRadius="md"
         p={4}
         display="flex"
@@ -39,12 +38,12 @@ const Flashcard: NextPage = () => {
         animate={!isFlipped ? 'front' : 'back'}
         hidden={isFlipped}
       >
-        <Heading color="white">Front</Heading>
+        <Heading color="brand.text">{frontText}</Heading>
       </MotionBox>
       <MotionBox
         w="300px"
-        h="400px"
-        backgroundColor="purple.500"
+        h="300px"
+        bg="blue"
         borderRadius="md"
         p={4}
         display="flex"
@@ -56,7 +55,7 @@ const Flashcard: NextPage = () => {
         animate={isFlipped ? 'front' : 'back'}
         hidden={!isFlipped}
       >
-        <Heading color="white">Back</Heading>
+        <Heading color="brand.text">{backText}</Heading>
       </MotionBox>
     </Box>
   );

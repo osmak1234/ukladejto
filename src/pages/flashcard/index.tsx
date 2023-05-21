@@ -6,7 +6,10 @@ import Flashcard from "~/components/flashcard";
 const FlashcardPage: NextPage = () => {
   return (
     <Box pt={70} className="page">
-      <Flashcard />
+      <Flashcard
+        frontText={"Front"}
+        backText={"Back"}
+      />
     </Box>
   );
 };
