@@ -1,4 +1,5 @@
 /** server/uploadthing.ts */
+import { type NextApiRequest, type NextApiResponse } from "next";
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
 const f = createUploadthing();
 
