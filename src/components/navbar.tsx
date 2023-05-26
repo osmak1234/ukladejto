@@ -66,7 +66,7 @@ const Navbar: NextPage = () => {
                     justifyContent='center'
 
                   >
-                    <Image style={{ borderRadius: "25px" }} alt="profile picture" src={session ? session.user?.image : "https://uploadthing.com/f/93953fc5-8afe-48dd-9171-ec26a86539de_anonymus.png"} width={50} height={50} />
+                    <Image style={{ borderRadius: "25px" }} alt="profile picture" src={session ? session.user?.image! : "https://uploadthing.com/f/60192848-4796-495f-85c1-9eedac5c3369_anonym.webp"} width={50} height={50} />
                     <Text fontSize='lg' fontWeight='bold' display='inline-flex' >{session ? session.user?.name : "Anonymus"}
                     </Text>
                   </Stack>

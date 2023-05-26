@@ -1,12 +1,18 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { type NextPage } from "next";
-import { Heading, Text, Button, Box } from "@chakra-ui/react";
+import { Heading, Text, Button, Box, Center } from "@chakra-ui/react";
+
+import { api } from "../utils/api";
 
 const Home: NextPage = () => {
+
+  const roomQuery = api.room.createRoom;
+  console.log(roomQuery);
+
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <main>Loading...</main>;
+    return <Box margin="auto" textAlign='center' pt="100px" >Loading...</Box>;
   }
 
   return (
@@ -22,6 +28,7 @@ const Home: NextPage = () => {
         {session ? (
           <>
             <Text color={"brand.text"}>hi {session.user?.name}</Text>
+            <Text>You are in: </Text>
           </>
         ) : (
           <>

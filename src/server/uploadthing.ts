@@ -3,6 +3,11 @@ import { type NextApiRequest, type NextApiResponse } from "next";
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
 const f = createUploadthing();
 
+import { prisma } from "~/server/db";
+
+// imrport trpc router here
+
+
 const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fakeId" }); // Fake auth function
 
 // FileRouter for your app, can contain multiple FileRoutes
@@ -24,6 +29,8 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
+
+
       console.log("Upload complete for userId:", metadata.userId);
 
       console.log("file url", file.url);

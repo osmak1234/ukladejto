@@ -7,8 +7,8 @@ const FlashcardPage: NextPage = () => {
   return (
     <Box pt={70} className="page">
       <Flashcard
-        frontText={"Front"}
-        backText={"Back"}
+        frontText={"Auf Wiedersehen"}
+        backText={"Naschledanou"}
       />
     </Box>
   );

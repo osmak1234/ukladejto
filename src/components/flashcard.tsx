@@ -15,7 +15,12 @@ const cardVariants = {
   },
 };
 
-const Flashcard = ({ frontText, backText }) => {
+interface FlashcardProps {
+  frontText: string;
+  backText: string;
+}
+
+const Flashcard = (props: FlashcardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleCardClick = () => {
@@ -38,7 +43,7 @@ const Flashcard = ({ frontText, backText }) => {
         animate={!isFlipped ? 'front' : 'back'}
         hidden={isFlipped}
       >
-        <Heading color="brand.text">{frontText}</Heading>
+        <Heading color="brand.text">{props.frontText}</Heading>
       </MotionBox>
       <MotionBox
         w="300px"
@@ -55,7 +60,7 @@ const Flashcard = ({ frontText, backText }) => {
         animate={isFlipped ? 'front' : 'back'}
         hidden={!isFlipped}
       >
-        <Heading color="brand.text">{backText}</Heading>
+        <Heading color="brand.text">{props.backText}</Heading>
       </MotionBox>
     </Box>
   );
