@@ -12,26 +12,24 @@ export const roomRouter = createTRPCRouter({
       data: {
         roomId: "1",
         userId: "1",
-      }
+      },
     });
-  }),
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
   }),
   getJoinedRooms: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.inRoom.findMany({
       where: {
-        userId: "1"
-      }
+        userId: "1",
+      },
     });
-  }
-  ),
+  }),
   createRoom: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.room.create({
       data: {
-        name: "test"
-      }
+        name: "test",
+      },
     });
-  }
-
+  }),
+  getRooms: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.room.findMany();
+  }),
 });

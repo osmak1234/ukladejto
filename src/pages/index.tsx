@@ -5,25 +5,22 @@ import { Heading, Text, Button, Box, Center } from "@chakra-ui/react";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
-
-  const roomQuery = api.room.createRoom;
-  console.log(roomQuery);
-
   const { data: session, status } = useSession();
 
   if (status === "loading") {
-    return <Box margin="auto" textAlign='center' pt="100px" >Loading...</Box>;
+    return (
+      <Box margin="auto" textAlign="center" pt="100px">
+        Loading...
+      </Box>
+    );
   }
 
   return (
     <Box pt={70}>
+      <Heading as={"h1"} size={"2xl"} color={"brand.text"} textAlign={"center"}>
+        Public Room
+      </Heading>
 
-      <Heading
-        as={"h1"}
-        size={"2xl"}
-        color={"brand.text"}
-        textAlign={"center"}
-      >Public Room</Heading>
       <Box>
         {session ? (
           <>
@@ -32,11 +29,11 @@ const Home: NextPage = () => {
           </>
         ) : (
           <>
-            <Text color={"brand.text"}>You are not signed in, sign in with the avatar in the navbar</Text>
+            <Text color={"brand.text"}>
+              You are not signed in, sign in with the avatar in the navbar
+            </Text>
           </>
-        )
-        }
-
+        )}
       </Box>
     </Box>
   );

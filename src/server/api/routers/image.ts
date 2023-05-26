@@ -7,7 +7,7 @@ import {
   protectedProcedure,
 } from "~/server/api/trpc";
 
-export const exampleRouter = createTRPCRouter({
+export const imageRouter = createTRPCRouter({
 
   newImage: publicProcedure
     .input(z.object({ url: z.string() }))
