@@ -1,20 +1,23 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const roomRouter = createTRPCRouter({
-  joinRoom: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.inRoom.create({
-      data: {
-        roomId: "1",
-        userId: "1",
-      },
-    });
-  }),
+  joinRoom: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.prisma.inRoom.create({
+          data: {
+            userId: "clhvrv6aq0000gemg38mzzfpe",
+            roomId: input,
+          },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+      return "success";
+    }),
   getJoinedRooms: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.inRoom.findMany({
       where: {
