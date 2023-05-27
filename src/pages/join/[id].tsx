@@ -13,11 +13,7 @@ const RoomId = () => {
 
   function handleJoinRoom() {
     response.mutate(roomId as string);
-    if (response.isSuccess) {
-      setStatus("success");
-    } else {
-      setStatus(response.error?.message || "error");
-    }
+    setStatus(response.status);
   }
 
   return (

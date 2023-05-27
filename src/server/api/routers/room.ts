@@ -15,11 +15,11 @@ export const roomRouter = createTRPCRouter({
         });
       } else {
         if (
-          await ctx.prisma.room.findUnique({
+          !(await ctx.prisma.room.findFirst({
             where: {
               id: input,
             },
-          })
+          }))
         ) {
           throw new TRPCError({
             code: "NOT_FOUND",
