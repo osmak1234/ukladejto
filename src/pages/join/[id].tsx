@@ -8,20 +8,27 @@ import { api } from "~/utils/api";
 const RoomId = () => {
   const router = useRouter();
   const { id: roomId } = router.query;
-  const response = api.room.joinRoom.useQuery(roomId as string);
+  const response = api.room.joinRoom.useMutation();
+  const [status, setStatus] = useState("");
+
+  function handleJoinRoom() {
+    response.mutate(roomId as string);
+    if (response.isSuccess) {
+      setStatus("success");
+    } else {
+      setStatus(response.error?.message || "error");
+    }
+  }
 
   return (
     <Box>
       <Center pt={70}>
         <Stack spacing={4} align="center" dir="column">
           <Heading>Room ID: {roomId}</Heading>
-          {response.isError ? (
-            <Text>Room not found</Text>
-          ) : (
-            <Text>
-              Room joined, return <Link href={"/"}> Home</Link>
-            </Text>
-          )}
+          <Button onClick={handleJoinRoom} colorScheme="blue">
+            Join Room
+          </Button>
+          <Text>{status ? status : ""}</Text>
         </Stack>
       </Center>
     </Box>
