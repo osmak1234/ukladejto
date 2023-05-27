@@ -9,11 +9,20 @@ const RoomId = () => {
   const router = useRouter();
   const { id: roomId } = router.query;
   const response = api.room.joinRoom.useMutation();
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    setStatus(response.status);
+  }, [response]);
 
   function handleJoinRoom() {
     response.mutate(roomId as string);
-    setStatus(response.status);
+    setStatus("Joining room...");
+    if (response.isSuccess) {
+      setStatus("Joined room!");
+    } else if (response.isError) {
+      setStatus(response.error?.message.toString());
+    }
   }
 
   return (
@@ -21,10 +30,14 @@ const RoomId = () => {
       <Center pt={70}>
         <Stack spacing={4} align="center" dir="column">
           <Heading>Room ID: {roomId}</Heading>
-          <Button onClick={handleJoinRoom} colorScheme="blue">
-            Join Room
-          </Button>
-          <Text>{status ? status : ""}</Text>
+          {status === "idle" ? (
+            <Button onClick={handleJoinRoom} colorScheme="blue">
+              Join Room
+            </Button>
+          ) : (
+            <Text>{status}</Text>
+          )}
+          <Text>{response.failureReason?.message} </Text>
         </Stack>
       </Center>
     </Box>
