@@ -10,6 +10,7 @@
     "lint": "next lint",
     "start": "next start"
   },
+  "packageManager": "pnpm@7.5.1",
   "dependencies": {
     "@chakra-ui/react": "^2.6.1",
     "@emotion/react": "^11.11.0",
