@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Heading, Text, Button, Box } from "@chakra-ui/react";
+//react
+import React, { useState } from "react";
 
+// chakra-ui
+import { motion } from "framer-motion";
+import { Heading, Box } from "@chakra-ui/react";
+
+// declared instead of motion.div
 const MotionBox = motion(Box);
 
 const cardVariants = {
@@ -20,6 +24,8 @@ interface FlashcardProps {
   backText: string;
 }
 
+// reusable flashcard component for learning, will be used in the future
+// TODO: text looks a bit weird during the animation, couldn't fix, feel free to try. framer-motion used for that
 const Flashcard = (props: FlashcardProps) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -40,7 +46,7 @@ const Flashcard = (props: FlashcardProps) => {
         justifyContent="center"
         alignItems="center"
         variants={cardVariants}
-        animate={!isFlipped ? 'front' : 'back'}
+        animate={!isFlipped ? "front" : "back"}
         hidden={isFlipped}
       >
         <Heading color="brand.text">{props.frontText}</Heading>
@@ -57,7 +63,7 @@ const Flashcard = (props: FlashcardProps) => {
         alignItems="center"
         position="absolute"
         variants={cardVariants}
-        animate={isFlipped ? 'front' : 'back'}
+        animate={isFlipped ? "front" : "back"}
         hidden={!isFlipped}
       >
         <Heading color="brand.text">{props.backText}</Heading>

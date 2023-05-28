@@ -4,11 +4,14 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const roomRouter = createTRPCRouter({
+  // first check a few things
+  // 1. is user loged in
+  // 2. does the room exist
+  // 3. is the user in the room
   joinRoom: protectedProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session.user) {
-        // this is error
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Unauthorized, login",
@@ -68,9 +71,11 @@ export const roomRouter = createTRPCRouter({
       },
     });
   }),
+
   getRooms: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.room.findMany();
   }),
+
   getRoom: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
     return ctx.prisma.room.findFirst({
       where: {

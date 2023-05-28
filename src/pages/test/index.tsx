@@ -1,8 +1,8 @@
 // ChakraUI
-import { Button, Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 // React
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 //upload component
 import { UploadButton } from "@uploadthing/react";
@@ -14,7 +14,6 @@ import type { OurFileRouter } from "~/server/uploadthing";
 import "@uploadthing/react/styles.css";
 
 export default function Home() {
-
   return (
     <Box pt={70}>
       <main className="flex min-h-screen flex-col items-center justify-between p-24">

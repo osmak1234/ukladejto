@@ -1,10 +1,17 @@
-import { useRouter } from "next/router";
+// react
 import { useEffect, useState } from "react";
-import { Center, Button, Heading, Text, Box, Stack } from "@chakra-ui/react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
+// chakra-ui
+import { Center, Button, Heading, Text, Box, Stack } from "@chakra-ui/react";
+
+// next
+// import Link from "next/link";
+
+// trpc backed
 import { api } from "~/utils/api";
 
+// this code is a bit messy, needs to be refactored like ~/src/pages/room/[id].tsx
 const RoomId = () => {
   const router = useRouter();
   const { id: roomId } = router.query;

@@ -1,9 +1,16 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+// next auth
+import { useSession } from "next-auth/react";
+
+// next
 import { type NextPage } from "next";
-import { Heading, Text, Button, Box, Center } from "@chakra-ui/react";
 
-import { api } from "../utils/api";
+// chakra-ui
+import { Heading, Text, Box } from "@chakra-ui/react";
 
+// trpc backend
+// import { api } from "../utils/api";
+
+// this component is used for testing the upload before they implement pdfs and we can use it
 const Home: NextPage = () => {
   const { data: session, status } = useSession();
 

@@ -1,14 +1,10 @@
-/** server/uploadthing.ts */
-import { type NextApiRequest, type NextApiResponse } from "next";
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
 const f = createUploadthing();
 
-import { prisma } from "~/server/db";
-
 // imrport trpc router here
+import { api } from "~/utils/api";
 
-
-const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fakeId" }); // Fake auth function
+const auth = api.auth.auth.useQuery();
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
@@ -17,19 +13,18 @@ export const ourFileRouter = {
     // Set permissions and file types for this FileRoute
     .fileTypes(["blob", "image", "video", "audio"])
     .maxSize("16MB")
-    .middleware(async (req, res) => {
+    .middleware(() => {
       // This code runs on your server before upload
-      const user = await auth(req, res);
+      const user = auth;
 
       // If you throw, the user will not be able to upload
       if (!user) throw new Error("Unauthorized");
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.id };
+      return { userId: user };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
+    .onUploadComplete(({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
-
 
       console.log("Upload complete for userId:", metadata.userId);
 

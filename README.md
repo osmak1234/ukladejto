@@ -10,9 +10,10 @@ Project for sharing learning materials between students.
 
   - [ ] Room fetching, checking user is in the room
 
-- [x] Create rooms
+- [ ] rooms
 
-  - [ ] Invite link
+  - [x] Invite link
+  - [x] Join room
   - [ ] create sub folders
   - [ ] get all data for room
   - [ ] create room ui,
