@@ -1,16 +1,36 @@
 ## TL;DR
+
 Project for sharing learning materials between students.
 
 ## To do
+
 - [ ] Database schema
-- [ ] Create rooms
+
+- [ ] trpc backed
+
+  - [ ] Room fetching, checking user is in the room
+
+- [x] Create rooms
+
   - [ ] Invite link
   - [ ] create sub folders
-- [ ] Upload files
+  - [ ] get all data for room
+  - [ ] create room ui,
+        Ideas
+  - Side by side pannels one chat second files
+  - Switching menu
+
+- [x] Upload files
+
+  - [ ] Upload pdfs
+  - [ ] save file link db
+
 - [ ] Get all files inside the room
-- [ ] Multiple rooms 
-- [ ] Navigation
+- [x] Multiple rooms
+- [x] Navigation
+
 ## Authors
+
 [@Tatranka](https://github.com/Tatrank)
 the one who came up with the idea, founding dev
 
@@ -18,10 +38,12 @@ the one who came up with the idea, founding dev
 founding dev
 
 ## Ideas
+
 Generate flash cards from the learning materials.
 OpenAI summary feature. (Maybe would be paid, it's pricey)
 
 ## Resources
+
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
