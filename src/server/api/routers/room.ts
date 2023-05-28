@@ -71,4 +71,11 @@ export const roomRouter = createTRPCRouter({
   getRooms: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.room.findMany();
   }),
+  getRoom: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.prisma.room.findFirst({
+      where: {
+        id: input,
+      },
+    });
+  }),
 });
