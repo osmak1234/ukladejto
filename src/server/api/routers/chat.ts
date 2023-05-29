@@ -21,6 +21,16 @@ export const chatRouter = createTRPCRouter({
           },
         });
       } else {
+        console.log(
+          await ctx.prisma.inRoom.findMany({
+            where: {
+              userId: ctx.session.user.id,
+              roomId: input,
+            },
+          })
+        );
+        console.log(ctx.session.user.id, input);
+
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "You aren't in the chat you requested",
@@ -31,7 +41,6 @@ export const chatRouter = createTRPCRouter({
     .input(
       z.object({
         message: z.string(),
-        authorId: z.string(),
         roomId: z.string(),
       })
     )
@@ -47,7 +56,7 @@ export const chatRouter = createTRPCRouter({
         return ctx.prisma.messages.create({
           data: {
             text: input.message,
-            userId: input.authorId,
+            userId: ctx.session.user.id,
             roomId: input.roomId,
           },
         });
