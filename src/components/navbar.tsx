@@ -43,14 +43,14 @@ const Navbar: NextPage = () => {
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Link href="/">
                 <Text fontSize="lg" fontWeight="bold" display="inline-flex">
-                  Veřejná místnos
+                  Veřejná místnost
                 </Text>
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Link href="/join">
                 <Text fontSize="lg" fontWeight="bold" display="inline-flex">
-                  Přpipojit
+                  Připojit
                 </Text>
               </Link>
             </motion.div>
