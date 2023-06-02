@@ -117,7 +117,7 @@ const Navbar: NextPage = () => {
                               fontWeight="bold"
                               display="inline-flex"
                             >
-                              room name ;)
+                              {room.room.name}
                             </Text>
                           </Link>
                         </MenuItem>

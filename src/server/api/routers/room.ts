@@ -57,6 +57,33 @@ export const roomRouter = createTRPCRouter({
         return "success";
       }
     }),
+  createRoom: protectedProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session.user) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Unauthorized, login",
+        });
+      } else {
+        try {
+          await ctx.prisma.room.create({
+            data: {
+              name: input,
+              createdBy: ctx.session.user.id,
+            },
+          });
+        } catch (e) {
+          console.log(e);
+        }
+        return ctx.prisma.room.findFirst({
+          where: {
+            name: input,
+            createdBy: ctx.session.user.id,
+          },
+        });
+      }
+    }),
 
   getJoinedRooms: protectedProcedure.query(async ({ ctx }) => {
     return await ctx.prisma.inRoom.findMany({
@@ -65,14 +92,6 @@ export const roomRouter = createTRPCRouter({
       },
       include: {
         room: true,
-      },
-    });
-  }),
-
-  createRoom: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.room.create({
-      data: {
-        name: "test",
       },
     });
   }),

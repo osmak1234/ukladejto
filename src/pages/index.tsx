@@ -30,10 +30,7 @@ const Home: NextPage = () => {
 
       <Box>
         {session ? (
-          <>
-            <Text color={"brand.text"}>hi {session.user?.name}</Text>
-            <Text>You are in: </Text>
-          </>
+          <></>
         ) : (
           <>
             <Text color={"brand.text"}>

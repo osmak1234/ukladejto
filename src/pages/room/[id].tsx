@@ -23,12 +23,10 @@ import { api } from "~/utils/api";
 
 // this code is good solution for waiting for the roomId, it's declared for later use
 const Room = () => {
-  const roomData = api.room.getRoom.useQuery(
-    useRouter().asPath.toString().slice(6)
-  );
   const router = useRouter();
   const { id: roomId } = router.query;
   const [message, setMessage] = useState("");
+  const room = api.room.getRoom.useQuery(roomId as string);
   const messages = api.chat.getChat.useQuery(
     useRouter().asPath.toString().slice(6)
   );
@@ -36,9 +34,7 @@ const Room = () => {
 
   return (
     <Box pt={70}>
-      <Heading>Room {roomId}</Heading>
-      <Text>{roomData.status}</Text>
-      <Text>{messages.status}</Text>
+      <Heading>Room {room.data?.name}</Heading>
       <Box key="messages">
         {messages.data?.map((message) => (
           <Box key={message.id}>
