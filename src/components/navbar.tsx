@@ -17,7 +17,8 @@ import { type NextPage } from "next";
 import { api } from "~/utils/api";
 
 const Navbar: NextPage = () => {
-  const userRooms = api.user.getRooms.useQuery();
+  const userRooms = api.room.getJoinedRooms.useQuery();
+  console.log(userRooms.data);
   const { data: session } = useSession();
   return (
     <>
