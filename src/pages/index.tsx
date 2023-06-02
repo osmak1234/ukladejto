@@ -16,14 +16,14 @@ const Home: NextPage = () => {
 
   if (status === "loading") {
     return (
-      <Box margin="auto" textAlign="center" pt="100px">
+      <Box margin="auto" textAlign="center" pt="100px" w="full" h="full">
         Loading...
       </Box>
     );
   }
 
   return (
-    <Box pt={70}>
+    <Box pt={70} h="full">
       <Heading as={"h1"} size={"2xl"} color={"brand.text"} textAlign={"center"}>
         Public Room
       </Heading>

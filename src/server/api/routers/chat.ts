@@ -27,6 +27,10 @@ export const chatRouter = createTRPCRouter({
               userId: ctx.session.user.id,
               roomId: input,
             },
+            take: 10,
+            orderBy: {
+              createdAt: "desc",
+            },
           })
         );
         console.log(ctx.session.user.id, input);
@@ -66,5 +70,24 @@ export const chatRouter = createTRPCRouter({
           message: "You aren't in the room you want to send the message in",
         });
       }
+    }),
+  olderMessages: protectedProcedure
+    .input(
+      z.object({
+        roomId: z.string(),
+        skip: z.number(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.messages.findMany({
+        where: {
+          roomId: input.roomId,
+        },
+        skip: input.skip,
+        take: 10,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
     }),
 });

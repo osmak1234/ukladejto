@@ -57,13 +57,18 @@ export const roomRouter = createTRPCRouter({
         return "success";
       }
     }),
-  getJoinedRooms: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.inRoom.findMany({
+
+  getJoinedRooms: protectedProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.inRoom.findMany({
       where: {
-        userId: "1",
+        userId: ctx.session.user.id,
+      },
+      include: {
+        room: true,
       },
     });
   }),
+
   createRoom: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.room.create({
       data: {

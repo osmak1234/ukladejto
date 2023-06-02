@@ -1,9 +1,9 @@
+// components
 import {
   Box,
-  Button,
   Container,
-  Stack,
   Text,
+  Stack,
   Menu,
   MenuItem,
   MenuList,
@@ -12,10 +12,37 @@ import {
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+
+// session
 import { signIn, signOut, useSession } from "next-auth/react";
+
+//types
 import { type NextPage } from "next";
+
+//trpc
 import { api } from "~/utils/api";
 
+//my types
+
+type Room = {
+  id: number;
+  name: string;
+  // other room properties
+};
+
+type UserRoomsData = {
+  rooms: Room[];
+};
+
+type SessionData = {
+  user: {
+    name: string;
+    image?: string;
+    // other user properties
+  };
+};
+
+// basic navbar component, it's static, links declared here
 const Navbar: NextPage = () => {
   const userRooms = api.user.getRooms.useQuery();
   const { data: session } = useSession();
@@ -25,7 +52,6 @@ const Navbar: NextPage = () => {
         position="fixed"
         top="0"
         as="nav"
-        h="70px"
         w="100%"
         css={{ backdropFilter: "blur(10px)" }}
         zIndex={2}
@@ -61,7 +87,6 @@ const Navbar: NextPage = () => {
                 </Text>
               </Link>
             </motion.div>
-
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Menu>
                 <MenuButton>
@@ -89,7 +114,12 @@ const Navbar: NextPage = () => {
                     </Text>
                   </Stack>
                 </MenuButton>
-                <MenuList>
+                <MenuList
+                  color={"brand.text"}
+                  bg={"brand.main"}
+                  _hover={{ bg: "brand.hover" }}
+                  _active={{ bg: "brand.pressed" }}
+                >
                   <MenuItem
                     color={"brand.text"}
                     bg={"brand.main"}
@@ -103,26 +133,64 @@ const Navbar: NextPage = () => {
                   >
                     {session ? "Sign Out" : "Sing In"}
                   </MenuItem>
-                  <Menu>
-                    <MenuButton as={Button} size="sm">
+                  <MenuItem
+                    color={"brand.text"}
+                    bg={"brand.main"}
+                    _hover={{ bg: "brand.hover" }}
+                    _active={{ bg: "brand.pressed" }}
+                  >
+                    Settings
+                  </MenuItem>
+                  <MenuButton>
+                    <MenuItem
+                      color={"brand.text"}
+                      bg={"brand.main"}
+                      _hover={{ bg: "brand.hover" }}
+                      _active={{ bg: "brand.pressed" }}
+                    >
                       My rooms
-                    </MenuButton>
-                    <MenuList>
-                      {userRooms.data?.map((room) => (
-                        <MenuItem key={room.id}>
-                          <Link href={`/room/${room.roomId}`}>
-                            <Text
-                              fontSize="lg"
-                              fontWeight="bold"
-                              display="inline-flex"
-                            >
-                              room name ;)
-                            </Text>
-                          </Link>
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </Menu>
+                    </MenuItem>
+                  </MenuButton>
+                  <MenuList>
+                    {
+                      userRooms.data.rooms.length ? (
+                    <MenuItem
+                      color={"brand.text"}
+                      bg={"brand.main"}
+                      _hover={{ bg: "brand.hover" }}
+                      _active={{ bg: "brand.pressed" }}
+                    >
+                      You don't have any rooms
+                    </MenuItem>
+                      ) : (
+                      userRooms.data!.rooms!.map(
+                      (room) =>
+                        room && (
+                          <MenuItem
+                            key={room.id}
+                            color={"brand.text"}
+                            bg={"brand.main"}
+                            _hover={{ bg: "brand.hover" }}
+                            _active={{ bg: "brand.pressed" }}
+                          >
+                            <Link href={`/room/${room.id}`}>
+                              <Text
+                                fontSize="lg"
+                                fontWeight="bold"
+                                display="inline-flex"
+                              >
+                                {room.name}
+                              </Text>
+                            </Link>
+                          </MenuItem>
+                        )
+                    )}
+                      )
+                    }
+
+
+
+                  </MenuList>
                 </MenuList>
               </Menu>
             </motion.div>

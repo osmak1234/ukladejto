@@ -4,6 +4,7 @@ import { imageRouter } from "./routers/image";
 import { roomRouter } from "./routers/room";
 import { chatRouter } from "./routers/chat";
 import { authRouter } from "./routers/auth";
+import { userRouter } from "./routers/user";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   room: roomRouter,
   chat: chatRouter,
   auth: authRouter,
+  user: userRouter,
 });
 
 // export type definition of API

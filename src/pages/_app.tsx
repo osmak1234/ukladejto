@@ -12,7 +12,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-
   const customTheme = extendTheme({
     colors: {
       brand: {
@@ -31,10 +30,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
           bg: "gray.900",
           color: "blue.50",
         },
+        html: {
+          scrollBehavior: "smooth",
+          height: "100%",
+        },
       },
     },
   });
-
 
   return (
     <SessionProvider session={session}>
