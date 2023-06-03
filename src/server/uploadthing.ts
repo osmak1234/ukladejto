@@ -8,6 +8,7 @@ const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fakeId" }); 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
+<<<<<<< Updated upstream
   imageUploader: f
     // Set permissions and file types for this FileRoute
     .fileTypes(["image", "video"])
@@ -23,8 +24,13 @@ export const ourFileRouter = {
       return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+=======
+  imageUploader: f({ image: { maxFileSize: "16MB" } })
+    // Set permissions and file types for this FileRoute
+    .onUploadComplete(({ file }) => {
+>>>>>>> Stashed changes
       // This code RUNS ON YOUR SERVER after upload
-      console.log("Upload complete for userId:", metadata.userId);
+      console.log("Upload complete for userId:");
 
       console.log("file url", file.url);
     }),

@@ -22,5 +22,20 @@ const config = {
     esmExternals: false, // THIS IS THE FLAG THAT MATTERS
   },
 
+<<<<<<< Updated upstream
+=======
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "uploadthing.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+      },
+    ],
+  },
+>>>>>>> Stashed changes
 };
 export default config;
