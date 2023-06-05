@@ -24,19 +24,24 @@ import { api } from "~/utils/api";
 // this code is good solution for waiting for the roomId, it's declared for later use
 const Room = () => {
   const router = useRouter();
+  const [cursor, setCursor] = useState("");
   const { id: roomId } = router.query;
   const [message, setMessage] = useState("");
   const room = api.room.getRoom.useQuery(roomId as string);
-  const messages = api.chat.getChat.useQuery(
-    useRouter().asPath.toString().slice(6)
-  );
+  const initialMessages = api.chat.firstMessages.useQuery({
+    roomId: roomId as string,
+    cursor: "",
+  });
+
+  const messages = api.chat.infiniteChat.useMutation();
   const sendMessage = api.chat.addMessage.useMutation();
+  const uploadFile = api.file.uploadFile.useMutation();
 
   return (
     <Box pt={70}>
       <Heading>Room {room.data?.name}</Heading>
-      <Box key="messages">
-        {messages.data?.map((message) => (
+      <Box key="messages" overflowY="scroll" h="70vh">
+        {initialMessages.data?.map((message) => (
           <Box key={message.id}>
             <Text>{message.text}</Text>
             <Text>{message.userId}</Text>
@@ -49,7 +54,7 @@ const Room = () => {
             w="75%"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") {
                 sendMessage.mutate({
                   roomId: roomId as string,

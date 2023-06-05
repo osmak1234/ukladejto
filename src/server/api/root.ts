@@ -1,6 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { exampleRouter } from "~/server/api/routers/example";
-import { imageRouter } from "./routers/image";
+import { fileRouter } from "./routers/file";
 import { roomRouter } from "./routers/room";
 import { chatRouter } from "./routers/chat";
 import { authRouter } from "./routers/auth";
@@ -13,7 +13,7 @@ import { userRouter } from "./routers/user";
  */
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
-  image: imageRouter,
+  file: fileRouter,
   room: roomRouter,
   chat: chatRouter,
   auth: authRouter,

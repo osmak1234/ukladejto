@@ -4,37 +4,65 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const chatRouter = createTRPCRouter({
-  getChat: protectedProcedure
-    .input(z.string())
+  firstMessages: protectedProcedure
+    .input(
+      z.object({
+        roomId: z.string(),
+        limit: z.number(),
+      })
+    )
     .query(async ({ ctx, input }) => {
+      const messages = await ctx.prisma.messages.findMany({
+        take: input.limit + 1,
+        where: {
+          roomId: input.roomId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      const nextCursor = messages.pop();
+      return {
+        messages: messages,
+        nextCursor: nextCursor ? nextCursor.id : null,
+      };
+    }),
+
+  infiniteChat: protectedProcedure
+    .input(
+      z.object({
+        roomId: z.string(),
+        limit: z.number(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       if (
         await ctx.prisma.inRoom.count({
           where: {
             userId: ctx.session.user.id,
-            roomId: input,
+            roomId: input.roomId,
           },
         })
       ) {
-        return ctx.prisma.messages.findMany({
+        const { roomId, limit, cursor } = input;
+        const messages = await ctx.prisma.messages.findMany({
+          take: limit + 1,
+          skip: 1,
+          cursor: cursor ? { id: cursor } : undefined,
           where: {
-            roomId: input,
+            roomId: roomId,
+          },
+          orderBy: {
+            createdAt: "desc",
           },
         });
+        const nextCursor = messages.pop();
+        return {
+          messages,
+          nextCursor: nextCursor ? nextCursor.id : null,
+        };
       } else {
-        console.log(
-          await ctx.prisma.inRoom.findMany({
-            where: {
-              userId: ctx.session.user.id,
-              roomId: input,
-            },
-            take: 10,
-            orderBy: {
-              createdAt: "desc",
-            },
-          })
-        );
-        console.log(ctx.session.user.id, input);
-
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "You aren't in the chat you requested",
@@ -70,24 +98,5 @@ export const chatRouter = createTRPCRouter({
           message: "You aren't in the room you want to send the message in",
         });
       }
-    }),
-  olderMessages: protectedProcedure
-    .input(
-      z.object({
-        roomId: z.string(),
-        skip: z.number(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      return ctx.prisma.messages.findMany({
-        where: {
-          roomId: input.roomId,
-        },
-        skip: input.skip,
-        take: 10,
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
     }),
 });

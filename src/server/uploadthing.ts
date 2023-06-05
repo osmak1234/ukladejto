@@ -2,6 +2,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
 
 const f = createUploadthing();
+import { api } from "~/utils/api";
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
@@ -22,9 +23,8 @@ export const ourFileRouter = {
       };
     })
     .onUploadComplete(({ metadata, file }) => {
-      // This code RUNS ON YOUR SERVER after upload
+      api.file.newFile.useQuery({ url: file.url });
       console.log("Upload complete for userId:", metadata.userId);
-
       console.log("file url", file.url);
     }),
 } satisfies FileRouter;
