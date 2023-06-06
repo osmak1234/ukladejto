@@ -5,14 +5,12 @@ import {
   Heading,
   Text,
   Button,
-  HStack,
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverHeader,
   PopoverBody,
   PopoverCloseButton,
-  PopoverAnchor,
 } from "@chakra-ui/react";
 
 //next router
@@ -26,7 +24,6 @@ import { api } from "~/utils/api";
 
 //components
 import Uploadfile from "~/components/uploadfile";
-import { RouteModule } from "next/dist/server/future/route-modules/route-module";
 
 //TODO: if the user is in the room, then show them the chat with the files displeyed on the side
 //  <Box resize='width' width='100px' height='100px' overflow='auto' bg='pink.400' /> example of how to make a box resizable
@@ -42,7 +39,7 @@ const Room = () => {
     limit: 10,
   });
   const [cursor, setCursor] = useState("");
-  const messages = api.chat.infiniteChat.useMutation();
+  // const messages = api.chat.infiniteChat.useMutation();
   const sendMessage = api.chat.addMessage.useMutation();
   console.log(cursor);
 
