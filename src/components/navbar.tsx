@@ -1,3 +1,4 @@
+//chakra ui
 import {
   Box,
   Button,
@@ -10,16 +11,25 @@ import {
   MenuButton,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+
+// auth stuff
+import { signIn, signOut, useSession } from "next-auth/react";
+
+// next
+import { useRouter } from "next/router";
+import { type NextPage } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { type NextPage } from "next";
+
+// trpc
 import { api } from "~/utils/api";
 
 const Navbar: NextPage = () => {
   const userRooms = api.room.getJoinedRooms.useQuery();
   console.log(userRooms.data);
   const { data: session } = useSession();
+
+  const { push } = useRouter();
   return (
     <>
       <Box
@@ -90,12 +100,17 @@ const Navbar: NextPage = () => {
                     </Text>
                   </Stack>
                 </MenuButton>
-                <MenuList>
+                <MenuList
+                  color={"blue.50"}
+                  bg={"blue.900"}
+                  _hover={{ bg: "blue.800" }}
+                  _active={{ bg: "blue.600" }}
+                >
                   <MenuItem
-                    color={"brand.text"}
-                    bg={"brand.main"}
-                    _hover={{ bg: "brand.hover" }}
-                    _active={{ bg: "brand.pressed" }}
+                    color={"blue.50"}
+                    bg={"blue.900"}
+                    _hover={{ bg: "blue.800" }}
+                    _active={{ bg: "blue.600" }}
                     onClick={() => {
                       session
                         ? signOut().catch(console.log)
@@ -105,12 +120,33 @@ const Navbar: NextPage = () => {
                     {session ? "Sign Out" : "Sing In"}
                   </MenuItem>
                   <Menu>
-                    <MenuButton as={Button} size="sm">
+                    <MenuButton
+                      color={"blue.50"}
+                      bg={"blue.600"}
+                      _hover={{ bg: "blue.700" }}
+                      _active={{ bg: "blue.400" }}
+                      as={Button}
+                      size="sm"
+                    >
                       My rooms
                     </MenuButton>
-                    <MenuList>
+                    <MenuList
+                      color={"blue.50"}
+                      bg={"blue.600"}
+                      _hover={{ bg: "blue.700" }}
+                      _active={{ bg: "blue.400" }}
+                    >
                       {userRooms.data?.map((room) => (
-                        <MenuItem key={room.id}>
+                        <MenuItem
+                          key={room.id}
+                          color={"blue.50"}
+                          bg={"blue.900"}
+                          _hover={{ bg: "blue.800" }}
+                          _active={{ bg: "blue.600" }}
+                          onClick={() => {
+                            push(`/room/${room.roomId}`).catch(console.log);
+                          }}
+                        >
                           <Link href={`/room/${room.roomId}`}>
                             <Text
                               fontSize="lg"

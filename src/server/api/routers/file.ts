@@ -7,7 +7,7 @@ export const fileRouter = createTRPCRouter({
     .input(
       z.object({ url: z.string(), userId: z.string(), roomId: z.string() })
     )
-    .query(({ ctx, input }) => {
+    .mutation(({ ctx, input }) => {
       return ctx.prisma.files.create({
         data: {
           name: "file",

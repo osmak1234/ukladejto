@@ -5,18 +5,28 @@ import {
   Heading,
   Text,
   Button,
-  Stack,
   HStack,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverAnchor,
 } from "@chakra-ui/react";
 
 //next router
 import { useRouter } from "next/router";
 
 //react
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //trpc
 import { api } from "~/utils/api";
+
+//components
+import Uploadfile from "~/components/uploadfile";
+import { RouteModule } from "next/dist/server/future/route-modules/route-module";
 
 //TODO: if the user is in the room, then show them the chat with the files displeyed on the side
 //  <Box resize='width' width='100px' height='100px' overflow='auto' bg='pink.400' /> example of how to make a box resizable
@@ -24,63 +34,89 @@ import { api } from "~/utils/api";
 // this code is good solution for waiting for the roomId, it's declared for later use
 const Room = () => {
   const router = useRouter();
-  const [cursor, setCursor] = useState("");
   const { id: roomId } = router.query;
   const [message, setMessage] = useState("");
   const room = api.room.getRoom.useQuery(roomId as string);
   const initialMessages = api.chat.firstMessages.useQuery({
-    roomId: roomId as string,
-    cursor: "",
+    roomId: router.query.id as string,
+    limit: 10,
   });
-
+  const [cursor, setCursor] = useState("");
   const messages = api.chat.infiniteChat.useMutation();
   const sendMessage = api.chat.addMessage.useMutation();
-  const uploadFile = api.file.uploadFile.useMutation();
+  console.log(cursor);
+
+  useEffect(() => {
+    if (initialMessages.data?.nextCursor) {
+      setCursor(initialMessages.data?.nextCursor);
+    }
+  }, [initialMessages.data?.nextCursor]);
 
   return (
     <Box pt={70}>
       <Heading>Room {room.data?.name}</Heading>
-      <Box key="messages" overflowY="scroll" h="70vh">
-        {initialMessages.data?.map((message) => (
+      <Box key="messages" overflowY="scroll" h="40vh">
+        {initialMessages.data?.messages.map((message) => (
           <Box key={message.id}>
             <Text>{message.text}</Text>
             <Text>{message.userId}</Text>
           </Box>
         ))}
       </Box>
-      <Box>
-        <HStack m="10%" spacing={4} align="center" dir="row">
-          <Input
-            w="75%"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                sendMessage.mutate({
-                  roomId: roomId as string,
-                  message: message,
-                });
-                setMessage("");
-              }
-            }}
-          ></Input>
-          <Button
-            colorScheme="blue"
-            w="25%"
-            onClick={() => {
+      <Box
+        display={"flex"}
+        flexDirection={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        w={"100%"}
+        gap={4}
+      >
+        <Popover>
+          <PopoverTrigger>
+            <Button colorScheme="blue">Upload file</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverHeader fontWeight="semibold" color="blue.50" bg="blue.900">
+              Upload a file
+            </PopoverHeader>
+            <PopoverCloseButton />
+            <PopoverBody bg="blue.900">
+              <Uploadfile room={room.data?.id ? room.data.id : ""} />
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+        <Input
+          w="75%"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
               sendMessage.mutate({
                 roomId: roomId as string,
                 message: message,
               });
               setMessage("");
-            }}
-          >
-            Send message
-          </Button>
-        </HStack>
+            }
+          }}
+        ></Input>
+        <Button
+          colorScheme="blue"
+          onClick={() => {
+            sendMessage.mutate({
+              roomId: roomId as string,
+              message: message,
+            });
+            setMessage("");
+          }}
+        >
+          Send message
+        </Button>
       </Box>
     </Box>
   );
 };
 
 export default Room;
+
+// <HStack m="10%" spacing={4} align="center" dir="row">
+//</HStack>
