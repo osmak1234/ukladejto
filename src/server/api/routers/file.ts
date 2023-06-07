@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const fileRouter = createTRPCRouter({
   newFile: publicProcedure
@@ -14,6 +18,15 @@ export const fileRouter = createTRPCRouter({
           url: input.url,
           userId: input.userId,
           roomId: input.roomId,
+        },
+      });
+    }),
+  getFilesInRoom: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return ctx.prisma.files.findMany({
+        where: {
+          roomId: input,
         },
       });
     }),

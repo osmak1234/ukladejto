@@ -13,8 +13,9 @@ import {
   PopoverCloseButton,
 } from "@chakra-ui/react";
 
-//next router
+//next
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 //react
 import { useEffect, useState } from "react";
@@ -30,18 +31,23 @@ import Uploadfile from "~/components/uploadfile";
 
 // this code is good solution for waiting for the roomId, it's declared for later use
 const Room = () => {
+  // router stuff (get data from the url)
   const router = useRouter();
   const { id: roomId } = router.query;
-  const [message, setMessage] = useState("");
+  //room data
   const room = api.room.getRoom.useQuery(roomId as string);
+  // message data
+  const [message, setMessage] = useState("");
   const initialMessages = api.chat.firstMessages.useQuery({
     roomId: router.query.id as string,
     limit: 10,
   });
   const [cursor, setCursor] = useState("");
-  // const messages = api.chat.infiniteChat.useMutation();
+  //const messages = api.chat.infiniteChat.useMutation();
   const sendMessage = api.chat.addMessage.useMutation();
   console.log(cursor);
+  //get the files
+  const files = api.file.getFilesInRoom.useQuery(roomId as string);
 
   useEffect(() => {
     if (initialMessages.data?.nextCursor) {
@@ -59,6 +65,17 @@ const Room = () => {
             <Text>{message.userId}</Text>
           </Box>
         ))}
+      </Box>
+      <Box key="files" overflow="scroll" h="20vh">
+        {files.data?.map((file) => {
+          return (
+            <Box key={file.id}>
+              <Text>{file.url}</Text>
+              <Text>{file.userId}</Text>
+              <Image alt="file" src={file.url} width={100} height={100}></Image>
+            </Box>
+          );
+        })}
       </Box>
       <Box
         display={"flex"}
