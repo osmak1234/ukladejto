@@ -11,6 +11,7 @@ import {
   PopoverHeader,
   PopoverBody,
   PopoverCloseButton,
+  useMediaQuery,
 } from "@chakra-ui/react";
 
 //next
@@ -25,7 +26,6 @@ import { api } from "~/utils/api";
 
 //components
 import Uploadfile from "~/components/uploadfile";
-
 //TODO: if the user is in the room, then show them the chat with the files displeyed on the side
 //  <Box resize='width' width='100px' height='100px' overflow='auto' bg='pink.400' /> example of how to make a box resizable
 
@@ -49,6 +49,8 @@ const Room = () => {
   //get the files
   const files = api.file.getFilesInRoom.useQuery(roomId as string);
 
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+
   useEffect(() => {
     if (initialMessages.data?.nextCursor) {
       setCursor(initialMessages.data?.nextCursor);
@@ -58,24 +60,76 @@ const Room = () => {
   return (
     <Box pt={70}>
       <Heading>Room {room.data?.name}</Heading>
-      <Box key="messages" overflowY="scroll" h="40vh">
-        {initialMessages.data?.messages.map((message) => (
-          <Box key={message.id}>
-            <Text>{message.text}</Text>
-            <Text>{message.userId}</Text>
-          </Box>
-        ))}
-      </Box>
-      <Box key="files" overflow="scroll" h="20vh">
-        {files.data?.map((file) => {
-          return (
-            <Box key={file.id}>
-              <Text>{file.url}</Text>
-              <Text>{file.userId}</Text>
-              <Image alt="file" src={file.url} width={100} height={100}></Image>
+      <Box display="flex" flexDirection={isLargerThan768 ? "row" : "column"}>
+        <Box
+          key="messages"
+          bg="gray.700"
+          borderRadius="8px"
+          overflowY="scroll"
+          h="40vh"
+          w="full"
+          m={2}
+        >
+          {initialMessages.data?.messages.map((message) => (
+            <Box
+              key={message.id}
+              borderRadius="5px"
+              bg="gray.600"
+              p="2"
+              borderColor="gray.500"
+              borderWidth={1}
+              m="2"
+            >
+              <Box display="flex" dir="row">
+                <Image
+                  style={{ borderRadius: "25px" }}
+                  alt="user"
+                  src={
+                    message.user.image
+                      ? message.user.image
+                      : "https://uploadthing.com/f/60192848-4796-495f-85c1-9eedac5c3369_anonym.webp"
+                  }
+                  width={50}
+                  height={50}
+                />
+                <Text>{message.user.name}</Text>
+              </Box>
+              <Text>{message.text}</Text>
             </Box>
-          );
-        })}
+          ))}
+        </Box>
+        <Box
+          key="files"
+          overflow="scroll"
+          h="40vh"
+          w="full"
+          bg="gray.700"
+          borderRadius="8px"
+          overflowY="scroll"
+          m={2}
+        >
+          {files.data?.map((file) => {
+            return (
+              <Box
+                key={file.id}
+                borderRadius="5px"
+                bg="gray.600"
+                p="2"
+                borderColor="gray.500"
+                borderWidth={1}
+                m="2"
+              >
+                <Text>{file.user.name}</Text>
+                <Image
+                  alt="file"
+                  src={file.url}
+                  width={200}
+                  height={200}
+                ></Image>
+              </Box>
+            );
+          })}
+        </Box>
       </Box>
       <Box
         display={"flex"}

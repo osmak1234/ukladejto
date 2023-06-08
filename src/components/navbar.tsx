@@ -51,21 +51,21 @@ const Navbar: NextPage = () => {
             alignItems="center"
             justifyContent="center"
           >
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
               <Link href="/">
                 <Text fontSize="lg" fontWeight="bold" display="inline-flex">
                   Veřejná místnost
                 </Text>
               </Link>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
               <Link href="/join">
                 <Text fontSize="lg" fontWeight="bold" display="inline-flex">
                   Připojit
                 </Text>
               </Link>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
               <Link href="/create">
                 <Text fontSize="lg" fontWeight="bold" display="inline-flex">
                   Založit
@@ -73,7 +73,7 @@ const Navbar: NextPage = () => {
               </Link>
             </motion.div>
 
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+            <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
               <Menu>
                 <MenuButton>
                   <Stack

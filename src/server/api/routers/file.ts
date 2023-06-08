@@ -28,6 +28,9 @@ export const fileRouter = createTRPCRouter({
         where: {
           roomId: input,
         },
+        include: {
+          user: true,
+        },
       });
     }),
 });

@@ -20,6 +20,9 @@ export const chatRouter = createTRPCRouter({
         orderBy: {
           createdAt: "desc",
         },
+        include: {
+          user: true,
+        },
       });
       const nextCursor = messages.pop();
       return {
