@@ -6,7 +6,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
-import Navbar from "~/components/navbar";
+import Navbar from "~/components/navbar2";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

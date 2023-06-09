@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  Avatar,
   HStack,
   IconButton,
   Button,
@@ -14,42 +13,37 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { signIn, signOut, useSession } from "next-auth/react";
-
-// next
-import { useRouter } from "next/router";
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
-// trpc
 import { api } from "~/utils/api";
 
-import { useEffect, useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
+
 const Links = [
   {
     name: "Veřejná místnost",
-    url: "/",
+    href: "/",
   },
   {
-    name: "Založit",
-    url: "/create",
+    name: "Vytvořit místnost",
+    href: "/rooms",
   },
 ];
 
-export default function Navbar() {
+export default function Simple() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const userRooms = api.room.getJoinedRooms.useMutation();
-  console.log(userRooms.data);
+  const userRooms = api.room.getJoinedRooms.useQuery();
+
   const { data: session } = useSession();
 
-  const [pfp, setPfp] = useState(
-    "https://uploadthing.com/f/60192848-4796-495f-85c1-9eedac5c3369_anonym.webp"
-  );
+  const { push } = useRouter();
 
   return (
     <>
-      <Box bg={"gray.900"} px={4}>
+      <Box bg={"gray.900"} px={4} color="blue.50">
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -58,12 +52,18 @@ export default function Navbar() {
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
           />
-          <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-            {Links.map((link) => (
-              <Link href={link.url} key={link.name}>
-                {link.name}
-              </Link>
-            ))}
+          <HStack spacing={8} alignItems={"center"}>
+            <HStack
+              as={"nav"}
+              spacing={4}
+              display={{ base: "none", md: "flex" }}
+            >
+              {Links.map((link) => (
+                <Link key={link.href} href={link.href}>
+                  {link.name}
+                </Link>
+              ))}
+            </HStack>
           </HStack>
           <Flex alignItems={"center"}>
             <Menu>
@@ -74,37 +74,53 @@ export default function Navbar() {
                 cursor={"pointer"}
                 minW={0}
               >
-                <Image
-                  style={{ borderRadius: "25px" }}
-                  alt="profile picture"
-                  src={pfp}
-                  width={50}
-                  height={50}
-                />
+                <Box dir="row" display="flex" textAlign="center" gap={2}>
+                  <Image
+                    style={{ borderRadius: "50%" }}
+                    width={40}
+                    height={40}
+                    alt="user avatar"
+                    src={
+                      session?.user?.image ??
+                      "https://uploadthing.com/f/60192848-4796-495f-85c1-9eedac5c3369_anonym.webp"
+                    }
+                  />
+                  <Box m="auto">
+                    {session ? session.user?.name : "Click to log in"}
+                  </Box>
+                </Box>
               </MenuButton>
               <MenuList>
-                <MenuItem>
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => {
-                      if (session?.user.id) {
-                        signOut().catch((e) => {
-                          console.log(e);
-                        });
-                      } else {
-                        signIn("discord").catch((e) => {
-                          console.log(e);
-                        });
-                      }
-                    }}
-                  >
-                    {session?.user.id ? "Odhlásit se" : "Přihlásit se"}
-                  </Button>
+                <MenuItem
+                  color={"blue.50"}
+                  bg={"blue.900"}
+                  _hover={{ bg: "blue.800" }}
+                  _active={{ bg: "blue.600" }}
+                  onClick={() => {
+                    session
+                      ? signOut().catch(console.log)
+                      : signIn("discord").catch(console.log);
+                  }}
+                >
+                  {session ? "Sign Out" : "Sing In"}
                 </MenuItem>
                 <MenuDivider />
-                {userRooms.data?.map((room) => {
-                  return <MenuItem key={room.id}></MenuItem>;
-                })}
+                {userRooms.data?.map((room) => (
+                  <MenuItem
+                    key={room.id}
+                    color={"blue.50"}
+                    bg={"blue.900"}
+                    _hover={{ bg: "blue.800" }}
+                    _active={{ bg: "blue.600" }}
+                    onClick={() => {
+                      push(`/room/${room.id}`).catch((e) => {
+                        console.log(e);
+                      });
+                    }}
+                  >
+                    <Link href={`/room/${room.id}`}>{room.room.name}</Link>
+                  </MenuItem>
+                ))}
               </MenuList>
             </Menu>
           </Flex>
@@ -114,7 +130,7 @@ export default function Navbar() {
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <Link key={link.name} href={link.url}>
+                <Link href={link.href} key={link.href}>
                   {link.name}
                 </Link>
               ))}
@@ -122,8 +138,6 @@ export default function Navbar() {
           </Box>
         ) : null}
       </Box>
-
-      <Box p={4}>Main Content Here</Box>
     </>
   );
 }
