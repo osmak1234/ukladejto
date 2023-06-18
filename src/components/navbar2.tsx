@@ -113,12 +113,12 @@ export default function Simple() {
                     _hover={{ bg: "blue.800" }}
                     _active={{ bg: "blue.600" }}
                     onClick={() => {
-                      push(`/room/${room.id}`).catch((e) => {
+                      push(`/room/${room.roomId}`).catch((e) => {
                         console.log(e);
                       });
                     }}
                   >
-                    <Link href={`/room/${room.id}`}>{room.room.name}</Link>
+                    <Link href={`/room/${room.roomId}`}>{room.room.name}</Link>
                   </MenuItem>
                 ))}
               </MenuList>

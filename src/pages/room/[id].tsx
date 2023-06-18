@@ -42,9 +42,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Room = ({ roomId }: { roomId: string }) => {
-  console.log("Server side props: ", roomId);
   //room data
   const room = api.room.getRoom.useQuery(roomId);
+  console.log("room data: ", room.data);
   // message data
   const [message, setMessage] = useState("");
   const initialMessages = api.chat.firstMessages.useQuery({
