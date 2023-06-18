@@ -76,12 +76,18 @@ export const roomRouter = createTRPCRouter({
         } catch (e) {
           console.log(e);
         }
-        return ctx.prisma.room.findFirst({
-          where: {
-            name: input,
-            createdBy: ctx.session.user.id,
-          },
-        });
+        try {
+          await ctx.prisma.inRoom.create({
+            data: {
+              userId: ctx.session.user.id,
+              roomId: input,
+            },
+          });
+        } catch (e) {
+          console.log(e);
+        }
+
+        return "success";
       }
     }),
 

@@ -15,8 +15,8 @@ import {
 } from "@chakra-ui/react";
 
 //next
-import { useRouter } from "next/router";
 import Image from "next/image";
+import type { GetServerSideProps } from "next";
 
 //react
 import { useEffect, useState } from "react";
@@ -26,20 +26,29 @@ import { api } from "~/utils/api";
 
 //components
 import Uploadfile from "~/components/uploadfile";
-//TODO: if the user is in the room, then show them the chat with the files displeyed on the side
-//  <Box resize='width' width='100px' height='100px' overflow='auto' bg='pink.400' /> example of how to make a box resizable
 
-// this code is good solution for waiting for the roomId, it's declared for later use
-const Room = () => {
-  // router stuff (get data from the url)
-  const router = useRouter();
-  const { id: roomId } = router.query;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
+  if (!id) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      roomId: id,
+    },
+  };
+};
+
+const Room = ({ roomId }: { roomId: string }) => {
+  console.log("Server side props: ", roomId);
   //room data
-  const room = api.room.getRoom.useQuery(roomId as string);
+  const room = api.room.getRoom.useQuery(roomId);
   // message data
   const [message, setMessage] = useState("");
   const initialMessages = api.chat.firstMessages.useQuery({
-    roomId: router.query.id as string,
+    roomId: roomId,
     limit: 10,
   });
   const [cursor, setCursor] = useState("");
@@ -47,7 +56,7 @@ const Room = () => {
   const sendMessage = api.chat.addMessage.useMutation();
   console.log(cursor);
   //get the files
-  const files = api.file.getFilesInRoom.useQuery(roomId as string);
+  const files = api.file.getFilesInRoom.useQuery("cli7dmhar0001ge7zdpslanv9");
 
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
@@ -160,7 +169,7 @@ const Room = () => {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               sendMessage.mutate({
-                roomId: roomId as string,
+                roomId: roomId,
                 message: message,
               });
               setMessage("");
@@ -171,7 +180,7 @@ const Room = () => {
           colorScheme="blue"
           onClick={() => {
             sendMessage.mutate({
-              roomId: roomId as string,
+              roomId: roomId,
               message: message,
             });
             setMessage("");
@@ -185,6 +194,3 @@ const Room = () => {
 };
 
 export default Room;
-
-// <HStack m="10%" spacing={4} align="center" dir="row">
-//</HStack>

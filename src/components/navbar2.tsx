@@ -29,7 +29,7 @@ const Links = [
   },
   {
     name: "Vytvořit místnost",
-    href: "/rooms",
+    href: "/create",
   },
 ];
 

@@ -90,7 +90,7 @@ model InRoom {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  room      Room     @relation(fields: [roomId], references: [id])
+  room      Room     @relation(fields: [roomId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   roomId    String
   user      User     @relation(fields: [userId], references: [id])
   userId    String

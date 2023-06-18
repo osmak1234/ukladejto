@@ -21,10 +21,6 @@ const config = {
   experimental: {
     esmExternals: false, // THIS IS THE FLAG THAT MATTERS
   },
-  webp: {
-    preset: "default",
-    quality: 100,
-  },
   images: {
     domains: ["uploadthing.com", "cdn.discordapp.com", "localhost"],
     remotePatterns: [
