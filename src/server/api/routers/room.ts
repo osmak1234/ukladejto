@@ -66,26 +66,19 @@ export const roomRouter = createTRPCRouter({
           message: "Unauthorized, login",
         });
       } else {
-        try {
-          await ctx.prisma.room.create({
-            data: {
-              name: input,
-              createdBy: ctx.session.user.id,
-            },
-          });
-        } catch (e) {
-          console.log(e);
-        }
-        try {
-          await ctx.prisma.inRoom.create({
-            data: {
-              userId: ctx.session.user.id,
-              roomId: input,
-            },
-          });
-        } catch (e) {
-          console.log(e);
-        }
+        // first create the room then add the user to the room
+        const room = await ctx.prisma.room.create({
+          data: {
+            name: input,
+          },
+        });
+
+        await ctx.prisma.inRoom.create({
+          data: {
+            userId: ctx.session.user.id,
+            roomId: room.id,
+          },
+        });
 
         return "success";
       }
