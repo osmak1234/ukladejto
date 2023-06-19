@@ -56,7 +56,7 @@ const Room = ({ roomId }: { roomId: string }) => {
   const sendMessage = api.chat.addMessage.useMutation();
   console.log(cursor);
   //get the files
-  const files = api.file.getFilesInRoom.useQuery("cli7dmhar0001ge7zdpslanv9");
+  const files = api.file.getFilesInRoom.useQuery(roomId);
 
   const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
@@ -101,9 +101,13 @@ const Room = ({ roomId }: { roomId: string }) => {
                   width={50}
                   height={50}
                 />
-                <Text>{message.user.name}</Text>
+                <Text mt="auto" mb="auto" ml="10px">
+                  {message.user.name}
+                </Text>
               </Box>
-              <Text>{message.text}</Text>
+              <Text mt="5px" mb="auto" ml="10px">
+                {message.text}
+              </Text>
             </Box>
           ))}
         </Box>
@@ -128,7 +132,22 @@ const Room = ({ roomId }: { roomId: string }) => {
                 borderWidth={1}
                 m="2"
               >
-                <Text>{file.user.name}</Text>
+                <Box display="flex" dir="row">
+                  <Image
+                    width={50}
+                    height={50}
+                    alt="profile picture"
+                    style={{ borderRadius: "25px" }}
+                    src={
+                      file.user.image
+                        ? file.user.image
+                        : "https://uploadthing.com/f/60192848-4796-495f-85c1-9eedac5c3369_anonym.webp"
+                    }
+                  />
+                  <Text mt="auto" mb="auto" ml="10px">
+                    {file.user.name}
+                  </Text>
+                </Box>
                 <Image
                   alt="file"
                   src={file.url}
@@ -145,8 +164,9 @@ const Room = ({ roomId }: { roomId: string }) => {
         flexDirection={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        w={"100%"}
+        w={"95%"}
         gap={4}
+        p={4}
       >
         <Popover>
           <PopoverTrigger>

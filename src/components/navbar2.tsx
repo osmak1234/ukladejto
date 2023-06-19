@@ -85,12 +85,17 @@ export default function Simple() {
                       "https://uploadthing.com/f/60192848-4796-495f-85c1-9eedac5c3369_anonym.webp"
                     }
                   />
-                  <Box m="auto">
+                  <Box m="auto" color="blue.50">
                     {session ? session.user?.name : "Click to log in"}
                   </Box>
                 </Box>
               </MenuButton>
-              <MenuList>
+              <MenuList
+                color={"blue.50"}
+                bg={"blue.900"}
+                _hover={{ bg: "blue.800" }}
+                _active={{ bg: "blue.600" }}
+              >
                 <MenuItem
                   color={"blue.50"}
                   bg={"blue.900"}
@@ -104,6 +109,7 @@ export default function Simple() {
                 >
                   {session ? "Sign Out" : "Sing In"}
                 </MenuItem>
+
                 <MenuDivider />
                 {userRooms.data?.map((room) => (
                   <MenuItem
