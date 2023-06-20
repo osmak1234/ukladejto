@@ -68,7 +68,14 @@ const Room = ({ roomId }: { roomId: string }) => {
 
   return (
     <Box pt={70}>
-      <Heading>Room {room.data?.name}</Heading>
+      <Heading>
+        Room{" "}
+        {room.isLoading
+          ? "Loading ..."
+          : room.data?.name
+          ? room.data.name
+          : "Room doesn't exist"}
+      </Heading>
       <Box display="flex" flexDirection={isLargerThan768 ? "row" : "column"}>
         <Box
           key="messages"
