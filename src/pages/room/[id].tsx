@@ -27,7 +27,8 @@ import { api } from "~/utils/api";
 //components
 import Uploadfile from "~/components/uploadfile";
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => { //eslint-disable-line
+
   const { id } = context.query;
   if (!id) {
     return {
