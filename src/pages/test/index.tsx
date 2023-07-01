@@ -1,6 +1,7 @@
 <<<<<<< Updated upstream
 =======
 import { Box } from "@chakra-ui/react";
+<<<<<<< Updated upstream
 
 >>>>>>> Stashed changes
 import { UploadButton } from "@uploadthing/react";
@@ -43,6 +44,16 @@ export default function Home() {
         />
       </main>
     </div>
+>>>>>>> Stashed changes
+=======
+import dynamic from "next/dynamic";
+const PDFViewer = dynamic(import("../../components/pdfviewer"), { ssr: false });
+
+export default function Home() {
+  return (
+    <Box>
+      <PDFViewer />
+    </Box>
 >>>>>>> Stashed changes
   );
 }

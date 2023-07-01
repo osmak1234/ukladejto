@@ -9,6 +9,7 @@ const auth = (req: NextApiRequest, res: NextApiResponse) => ({ id: "fakeId" }); 
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   imageUploader: f
     // Set permissions and file types for this FileRoute
     .fileTypes(["image", "video"])
@@ -26,6 +27,13 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
 =======
   imageUploader: f({ image: { maxFileSize: "16MB" } })
+=======
+  imageUploader: f({
+    image: { maxFileSize: "16MB" },
+    blob: { maxFileSize: "16MB" },
+  })
+    .middleware((req, res) => {})
+>>>>>>> Stashed changes
     // Set permissions and file types for this FileRoute
     .onUploadComplete(({ file }) => {
 >>>>>>> Stashed changes
