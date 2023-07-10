@@ -12,7 +12,7 @@ export const chatRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const messages = await ctx.prisma.messages.findMany({
+      const messages = await ctx.prisma.message.findMany({
         take: input.limit + 1,
         where: {
           roomId: input.roomId,
@@ -49,7 +49,7 @@ export const chatRouter = createTRPCRouter({
         })
       ) {
         const { roomId, limit, cursor } = input;
-        const messages = await ctx.prisma.messages.findMany({
+        const messages = await ctx.prisma.message.findMany({
           take: limit + 1,
           skip: 1,
           cursor: cursor ? { id: cursor } : undefined,
@@ -88,7 +88,7 @@ export const chatRouter = createTRPCRouter({
           },
         })
       ) {
-        return ctx.prisma.messages.create({
+        return ctx.prisma.message.create({
           data: {
             text: input.message,
             userId: ctx.session.user.id,

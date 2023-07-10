@@ -48,16 +48,18 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?    @unique
+  email         String?     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   inRooms       InRoom[]
-  files         Files[]
-  messages      Messages[]
+  files         File[]
+  messages      Message[]
+  FlashCards    FlashCard[]
+  Deck          Deck[]
 }
 
 model VerificationToken {
@@ -73,14 +75,14 @@ model VerificationToken {
 
 // used in trpc router: room
 model Room {
-  id        String     @id @default(cuid())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  createdBy String     @default("admin")
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  createdBy String    @default("admin")
   name      String
   users     InRoom[]
-  files     Files[]
-  messages  Messages[]
+  files     File[]
+  messages  Message[]
 }
 
 // used in trpc routers: room, chat, image
@@ -95,7 +97,7 @@ model InRoom {
 }
 
 // used in trpc router:
-model Files {
+model File {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -108,7 +110,7 @@ model Files {
 }
 
 // used in trpc router: chat.ts
-model Messages {
+model Message {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -117,4 +119,26 @@ model Messages {
   userId    String
   room      Room     @relation(fields: [roomId], references: [id])
   roomId    String
+}
+
+model FlashCard {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  front     String   @default("")
+  back      String   @default("")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  deckId    String
+  deck      Deck     @relation(fields: [deckId], references: [id])
+}
+
+model Deck {
+  id         String      @id @default(cuid())
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  name       String
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  FlashCards FlashCard[]
 }
