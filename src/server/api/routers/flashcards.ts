@@ -29,19 +29,47 @@ export const flashcards = createTRPCRouter({
     }
   }),
 
-  createFlashcard: publicProcedure
-    .input(
-      z.object({
-        deckId: z.number(),
-        front: z.string(),
-        back: z.string(),
-      })
-    )
-    .mutation(({ ctx, input }) => {
+  getDeck: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(({ ctx, input }) => {
       if (!ctx.session?.user) {
         throw new Error("not logged in");
       } else {
-        return "test";
+        return ctx.prisma.deck.findFirst({
+          where: {
+            id: input.id,
+            userId: ctx.session.user.id,
+          },
+          include: {
+            FlashCards: true,
+          },
+        });
+      }
+    }),
+
+  createFlashcards: publicProcedure
+    .input(
+      z.array(
+        z.object({
+          front: z.string(),
+          back: z.string(),
+          deckId: z.string(),
+        })
+      )
+    )
+    .mutation(({ ctx, input }) => {
+      if (!ctx.session?.user?.id) {
+        throw new Error("not logged in");
+      } else {
+        const modifiedInput = input.map((flashcard) => {
+          return {
+            ...flashcard,
+            userId: ctx.session?.user.id ?? "",
+          };
+        });
+        return ctx.prisma.flashCard.createMany({
+          data: modifiedInput,
+        });
       }
     }),
 });
