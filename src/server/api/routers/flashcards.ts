@@ -63,7 +63,9 @@ export const flashcards = createTRPCRouter({
       } else {
         const modifiedInput = input.map((flashcard) => {
           return {
-            ...flashcard,
+            front: flashcard.front,
+            back: flashcard.back,
+            deckId: flashcard.deckId,
             userId: ctx.session?.user.id ?? "",
           };
         });

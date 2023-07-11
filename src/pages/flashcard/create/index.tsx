@@ -17,6 +17,7 @@ import type { NextPage } from "next";
 
 const CreateFlashcard: NextPage = () => {
   const createFlashcard = api.flashcards.createFlashcards.useMutation();
+  const [deckName, setDeckName] = useState("");
   const [flashcardsArray, setFlashcardsArray] = useState([
     { front: "", back: "" },
   ]);
@@ -44,17 +45,29 @@ const CreateFlashcard: NextPage = () => {
   };
 
   const handleSubmit = () => {
-    flashcardsArray.filter((card) => card.front !== "" || card.back !== "");
-    const withId = flashcardsArray.map((card) => {
-      return { ...card, deckId: "1" };
-    });
-    createFlashcard.mutate(withId);
+    // fileter all the empty cards
+    const withId = flashcardsArray
+      .filter((card) => card.front !== "" && card.back !== "")
+      .map((card) => {
+        return { deckId: deckName, front: card.front, back: card.back };
+      });
+    if (withId.length > 0) {
+      createFlashcard.mutate(withId);
+    }
   };
 
   return (
     <Box>
-      <Heading>Create Flashcards</Heading>
+      <Heading textAlign="center" mb={10}>
+        Create Flashcard deck
+      </Heading>
       <VStack spacing={5}>
+        <Input
+          placeholder="Deck Name"
+          maxW={552}
+          value={deckName}
+          onChange={(e) => setDeckName(e.target.value)}
+        />
         {flashcardsArray.map((card, index) => (
           <HStack key={index}>
             <Input
@@ -88,7 +101,7 @@ const CreateFlashcard: NextPage = () => {
         <Button colorScheme="green" onClick={handleAddCard}>
           Add card
         </Button>
-        <Button colorScheme="blue" onClick={() => console.log(flashcardsArray)}>
+        <Button colorScheme="blue" onClick={handleSubmit}>
           Submit
         </Button>
       </VStack>
