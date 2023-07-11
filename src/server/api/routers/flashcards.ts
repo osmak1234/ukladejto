@@ -41,7 +41,7 @@ export const flashcards = createTRPCRouter({
       )
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session?.user)
+      if (!ctx.session?.user.id)
         throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
       if (!input.length)
         throw new TRPCError({

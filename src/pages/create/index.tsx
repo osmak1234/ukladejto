@@ -41,6 +41,7 @@ const CreateRoom: NextPage = () => {
               <Button
                 onClick={() => {
                   createRoom.mutate(roomName);
+                  setRoomName("");
                 }}
                 colorScheme="blue"
               >
