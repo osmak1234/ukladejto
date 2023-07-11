@@ -50,7 +50,7 @@ export const flashcards = createTRPCRouter({
         });
 
       const existingDeck = await ctx.prisma.deck.findFirst({
-        where: { id: input[0].deckId },
+        where: { id: input[0]?.deckId },
       });
       if (existingDeck)
         throw new TRPCError({
@@ -64,7 +64,8 @@ export const flashcards = createTRPCRouter({
       const flashcardsModified = input.map((item) => ({
         ...item,
         deckId: newDeck.id,
-        userId: ctx.session.user.id,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        userId: ctx.session!.user.id,
       }));
       const flashcardsCreated = await ctx.prisma.flashCard.createMany({
         data: flashcardsModified,
