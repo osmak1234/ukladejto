@@ -14,7 +14,7 @@ export const flashcards = createTRPCRouter({
       });
     }),
 
-  getDecks: publicProcedure.input(z.object({})).query(({ ctx }) => {
+  getDecks: publicProcedure.query(({ ctx }) => {
     if (!ctx.session?.user)
       throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
     return ctx.prisma.deck.findMany({ where: { userId: ctx.session.user.id } });
@@ -59,7 +59,8 @@ export const flashcards = createTRPCRouter({
         });
 
       const newDeck = await ctx.prisma.deck.create({
-        data: { name: "default", userId: ctx.session.user.id },
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        data: { name: input[0]!.deckId, userId: ctx.session.user.id },
       });
       const flashcardsModified = input.map((item) => ({
         ...item,

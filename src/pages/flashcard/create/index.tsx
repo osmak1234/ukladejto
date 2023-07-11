@@ -52,7 +52,7 @@ const CreateFlashcard: NextPage = () => {
         return { deckId: deckName, front: card.front, back: card.back };
       });
     if (withId.length > 0) {
-      //createFlashcard.mutate(withId);
+      createFlashcard.mutate(withId);
       setFlashcardsArray([{ front: "", back: "" }]);
       setDeckName("");
     } else {
