@@ -1,17 +1,16 @@
-// next auth
 import { useSession } from "next-auth/react";
 
-// next
-import { type NextPage } from "next";
+import {
+  Box,
+  Flex,
+  Container,
+  Heading,
+  Stack,
+  Text,
+  Button,
+} from "@chakra-ui/react";
 
-// chakra-ui
-import { Heading, Text, Box } from "@chakra-ui/react";
-
-// trpc backend
-// import { api } from "../utils/api";
-
-// this component is used for testing the upload before they implement pdfs and we can use it
-const Home: NextPage = () => {
+export default function Home() {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
@@ -21,26 +20,43 @@ const Home: NextPage = () => {
       </Box>
     );
   }
-
   return (
-    <Box pt={70} h="full">
-      <Heading as={"h1"} size={"2xl"} color={"brand.text"} textAlign={"center"}>
-        Public Room
-      </Heading>
-
-      <Box>
-        {session ? (
-          <></>
-        ) : (
-          <>
-            <Text color={"brand.text"}>
-              You are not signed in, sign in with the avatar in the navbar
-            </Text>
-          </>
-        )}
-      </Box>
-    </Box>
+    <Container maxW={"5xl"}>
+      <Stack
+        textAlign={"center"}
+        align={"center"}
+        spacing={{ base: 8, md: 10 }}
+        py={{ base: 20, md: 28 }}
+      >
+        <Heading
+          fontWeight={600}
+          fontSize={{ base: "3xl", sm: "4xl", md: "6xl" }}
+          lineHeight={"110%"}
+        >
+          Sdlílení školních materiálů se stalo{" "}
+          <Text as={"span"} color={"blue.400"}>
+            jednodušším
+          </Text>
+        </Heading>
+        <Text color={"gray.500"} maxW={"3xl"}>
+          Už nikdy neztratíš své materiály a budeš mít přehled o všech
+        </Text>
+        <Stack spacing={6} direction={"row"}>
+          <Button
+            rounded={"full"}
+            px={6}
+            colorScheme="blue"
+            bg={"blue.400"}
+            _hover={{ bg: "blue.500" }}
+          >
+            Vytvořit místost
+          </Button>
+          <Button rounded={"full"} px={6}>
+            Připojit se do místnosti
+          </Button>
+        </Stack>
+        <Flex w={"full"}></Flex>
+      </Stack>
+    </Container>
   );
-};
-
-export default Home;
+}

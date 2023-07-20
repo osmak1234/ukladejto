@@ -47,7 +47,17 @@ export default function Simple() {
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            bg={"blue.600"}
+            _hover={{
+              bg: "blue.500",
+            }}
+            icon={
+              isOpen ? (
+                <CloseIcon color={"white"} />
+              ) : (
+                <HamburgerIcon color={"white"} />
+              )
+            }
             aria-label={"Open Menu"}
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
@@ -57,8 +67,10 @@ export default function Simple() {
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}
+              // display line in bettween Links
             >
               {Links.map((link) => (
+                //line in bettween link
                 <Link key={link.href} href={link.href}>
                   {link.name}
                 </Link>
@@ -93,6 +105,7 @@ export default function Simple() {
               <MenuList
                 color={"blue.50"}
                 bg={"blue.900"}
+                borderColor={"blue.600"}
                 _hover={{ bg: "blue.800" }}
                 _active={{ bg: "blue.600" }}
               >
@@ -136,9 +149,11 @@ export default function Simple() {
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <Link href={link.href} key={link.href}>
-                  {link.name}
-                </Link>
+                <Box key={link.href} borderBottom="2px" borderColor="blue.600">
+                  <Link href={link.href} key={link.href}>
+                    {link.name}
+                  </Link>
+                </Box>
               ))}
             </Stack>
           </Box>
